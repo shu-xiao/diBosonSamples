@@ -38,10 +38,11 @@ void TRootLHEFParticle::Loop()
     TH1F *h_higgsPz[3];
     TH1F *h_higgsRap[3];
     TH1F *h_hhDeltaR = new TH1F("h_hhDeltaR","h_hhDeltaR",60,2,5);
+    TH1F *h_hhM = new TH1F("h_hhNewResonanceM","h_hhNewResonanceM",40,2000,4000);
     string text[3] = {"higgs1","higgs2","NewResonance"};
     for (int i=0;i<3;i++) {
         h_higgsPt[i] = new TH1F(Form("h_%sPt",text[i].data()),Form("h_%sPt",text[i].data()),40,0,2000);
-        h_higgsPz[i] = new TH1F(Form("h_%sPz",text[i].data()),Form("h_%sPz",text[i].data()),40,0,2000);
+        h_higgsPz[i] = new TH1F(Form("h_%sPz",text[i].data()),Form("h_%sPz",text[i].data()),40,-2000,2000);
         h_higgsRap[i] = new TH1F(Form("h_%sRapidity",text[i].data()),Form("h_%sRapidity",text[i].data()),60,-3,3);
     }
    Long64_t nentries = fChain->GetEntriesFast();
@@ -70,6 +71,7 @@ void TRootLHEFParticle::Loop()
         h_higgsPz[2]->Fill(ResonanceVect.Pz());
         h_higgsRap[2]->Fill(Particle_Rapidity[hIndex[0]]+Particle_Rapidity[hIndex[1]]);
         h_hhDeltaR->Fill(higgsVect[0].DeltaR(higgsVect[1]));
+        h_hhM->Fill((higgsVect[0]+higgsVect[1]).M());
       }
       //if (jentry%100) cout << "ggg  " << ientry << "\t" << jentry << endl;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -79,6 +81,8 @@ void TRootLHEFParticle::Loop()
    string pdfName = "BulkGraviton_hh_M3000.pdf";
    TCanvas *c1 = new TCanvas("c1","c1",3);
    c1->Print((pdfName+"[").data());
+   h_hhM->Draw("hist");
+  c1->Print(pdfName.data());
    for (int i=0;i<3;i++) {
       h_higgsPt[i]->Draw("hist");
       c1->Print(pdfName.data());
