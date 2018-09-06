@@ -53,7 +53,7 @@ void TRootLHEFParticle::Loop()
       Int_t nHiggs = 0;
       Int_t hIndex[2] = {-1,-1};
       TLorentzVector higgsVect[2];
-      for (int i=0;i<nPar;i++) {
+      for (int i=0;i<Particle_size;i++) {
             if (Particle_PID[i]==25) {
                 h_higgsPt[nHiggs]->Fill(Particle_PT[i]);
                 h_higgsPz[nHiggs]->Fill(Particle_Pz[i]);
