@@ -27,6 +27,9 @@ after preparing cards, jobs to generate gridpack will be sent to batch system an
 
 ### How do I use it?
 * How to generate large number of samples
+
 please change this [line](genGridpack_diboson.py#L12), the gridpack with the mass point in array will be generated
+
 * How to change the width
+
 please change this [line](genGridpack_diboson.py#L19-L20), width can vary with resonance mass or be fixed  
