@@ -3,18 +3,28 @@ import shutil
 
 exe = 0
 sub = 1
-def mkNdir(dirName):
+def mkDir(dirName):
     if not os.path.isdir(dirName): os.mkdir(dirName)
 
-
 def main():
-    widthRatio = 0.1
-    #mXList = [600,800,1000,1200,1400,1700,2000,2500] 
+
+    # unit of MX and width is GeV
     mXList = [3000] 
-    for mX in mXList:
+    widthRatio = 0.1
+
+
+    print "produce MX list: ", mXList
+    print
+    for mX in mXList: 
+        width = mX*widthRatio
+        # width = 0.001
+
         # spin 2, BulkGraviton
         dirName = 'BulkGraviton_hh_M'+str(mX)
-        mkNdir('cards/'+dirName)
+        if (width>1):   dirName+='_wideWidth'
+        else:           dirName+='_narrowWidth'
+        
+        mkDir('cards/'+dirName)
         print('create '+dirName)
         shutil.copyfile('cards/BulkGraviton_hh_template/tem_run_card.dat','cards/'+dirName+'/'+dirName+'_run_card.dat')
         shutil.copyfile('cards/BulkGraviton_hh_template/tem_extramodels.dat','cards/'+dirName+'/'+dirName+'_extramodels.dat')
@@ -30,7 +40,7 @@ def main():
         f_cust1 = open('cards/'+dirName+'/'+dirName+'_customizecards.dat','w')
         for line in f_cust0:
             if line.find('MX') > 0: f_cust1.write(line.replace('MX',str(mX)))
-            elif line.find('WX') > 0: f_cust1.write(line.replace('WX',str(mX*widthRatio)))
+            elif line.find('WX') > 0: f_cust1.write(line.replace('WX',str(width)))
             else: f_cust1.write(line)
         f_cust0.close()
         f_cust1.close()
@@ -42,7 +52,7 @@ def main():
 
         # spin 0, Radion
         dirName = 'Radion_hh_M'+str(mX)
-        mkNdir('cards/'+dirName)
+        mkDir('cards/'+dirName)
         print('create '+dirName)
         shutil.copyfile('cards/Radion_hh_template/tem_run_card.dat','cards/'+dirName+'/'+dirName+'_run_card.dat')
         shutil.copyfile('cards/Radion_hh_template/tem_extramodels.dat','cards/'+dirName+'/'+dirName+'_extramodels.dat')
@@ -58,7 +68,7 @@ def main():
         f_cust1 = open('cards/'+dirName+'/'+dirName+'_customizecards.dat','w')
         for line in f_cust0:
             if line.find('MX') > 0: f_cust1.write(line.replace('MX',str(mX)))
-            elif line.find('WX') > 0: f_cust1.write(line.replace('WX',str(mX*widthRatio)))
+            elif line.find('WX') > 0: f_cust1.write(line.replace('WX',str(width)))
             else: f_cust1.write(line)
         f_cust0.close()
         f_cust1.close()
@@ -70,4 +80,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    #os.system('cp *.tarball.tar.xz ~/public/ZpBaryonic_gridpack_new')
+    #os.system('cp *.tarball.tar.xz ~/public/gridpackDir')
